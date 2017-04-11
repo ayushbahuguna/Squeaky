@@ -26,6 +26,7 @@ kapt {
 }
 
 dependencies {
+    def thirtyinchVersion = '0.8.0-rc3'
     //Default
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -42,6 +43,11 @@ dependencies {
     compile 'com.google.dagger:dagger-android-support:2.10'
     kapt 'com.google.dagger:dagger-compiler:2.10'
     provided 'javax.annotation:jsr250-api:1.0'
+
+    //Thirty-Inch Library
+    // MVP for activity and fragment
+    compile "net.grandcentrix.thirtyinch:thirtyinch:$thirtyinchVersion"
+    compile "net.grandcentrix.thirtyinch:thirtyinch-rx2:$thirtyinchVersion"
 }
 repositories {
     mavenCentral()
