@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 25
@@ -20,15 +21,33 @@ android {
     }
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
+    def thirtyinchVersion = '0.8.0-rc3'
+    //Default
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestCompile('com.google.dagger:dagger-compiler:2.10')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    //Dagger2 https://github.com/google/dagger#android-gradle
+    compile 'com.google.dagger:dagger:2.10'
+    compile 'com.google.dagger:dagger-android-support:2.10'
+    kapt 'com.google.dagger:dagger-compiler:2.10'
+    provided 'javax.annotation:jsr250-api:1.0'
+
+    //Thirty-Inch Library
+    // MVP for activity and fragment
+    compile "net.grandcentrix.thirtyinch:thirtyinch:$thirtyinchVersion"
+    compile "net.grandcentrix.thirtyinch:thirtyinch-rx2:$thirtyinchVersion"
 }
 repositories {
     mavenCentral()
