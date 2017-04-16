@@ -32,22 +32,28 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile('com.google.dagger:dagger-compiler:2.10')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    //Design Support Library for NavigationView
+    // compile 'com.android.support:design:25.2.0'
     //Dagger2 https://github.com/google/dagger#android-gradle
-    compile 'com.google.dagger:dagger:2.10'
-    compile 'com.google.dagger:dagger-android-support:2.10'
-    kapt 'com.google.dagger:dagger-compiler:2.10'
-    provided 'javax.annotation:jsr250-api:1.0'
 
     //Thirty-Inch Library
     // MVP for activity and fragment
     compile "net.grandcentrix.thirtyinch:thirtyinch:$thirtyinchVersion"
     compile "net.grandcentrix.thirtyinch:thirtyinch-rx2:$thirtyinchVersion"
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.dagger:dagger:2.10'
+    compile 'com.google.dagger:dagger-android-support:2.10'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.google.dagger:dagger-compiler:2.10'
+    kapt 'com.google.dagger:dagger-compiler:2.10'
+    provided 'javax.annotation:jsr250-api:1.0'
 }
 repositories {
     mavenCentral()
