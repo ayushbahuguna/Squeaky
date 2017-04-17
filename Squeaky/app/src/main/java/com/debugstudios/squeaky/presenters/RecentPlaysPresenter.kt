@@ -1,7 +1,12 @@
 package com.debugstudios.squeaky.presenters
 
-/**
- * Created by prajjwal on 17/4/17.
- */
-class RecentPlaysPresenter {
+import com.debugstudios.squeaky.contracts.views.RecentPlaysView
+import net.grandcentrix.thirtyinch.TiPresenter
+
+class RecentPlaysPresenter : TiPresenter<RecentPlaysView>() {
+
+    override fun onAttachView(view: RecentPlaysView) {
+        super.onAttachView(view)
+        view.setToolbarTitle("Recent Plays")
+    }
 }

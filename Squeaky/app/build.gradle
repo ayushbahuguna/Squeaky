@@ -34,10 +34,6 @@ dependencies {
     })
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    //Design Support Library for NavigationView
-    // compile 'com.android.support:design:25.2.0'
-    //Dagger2 https://github.com/google/dagger#android-gradle
-
     //Thirty-Inch Library
     // MVP for activity and fragment
     compile "net.grandcentrix.thirtyinch:thirtyinch:$thirtyinchVersion"
@@ -54,6 +50,10 @@ dependencies {
     androidTestCompile 'com.google.dagger:dagger-compiler:2.10'
     kapt 'com.google.dagger:dagger-compiler:2.10'
     provided 'javax.annotation:jsr250-api:1.0'
+    //Iconify  https://github.com/JoanZapata/android-iconify
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
+    compile 'com.joanzapata.iconify:android-iconify-material:2.2.2'
+    compile 'com.joanzapata.iconify:android-iconify-material-community:2.2.2'
 }
 repositories {
     mavenCentral()

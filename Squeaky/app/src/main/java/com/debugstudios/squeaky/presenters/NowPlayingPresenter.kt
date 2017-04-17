@@ -1,7 +1,12 @@
 package com.debugstudios.squeaky.presenters
 
-/**
- * Created by prajjwal on 16/4/17.
- */
-class NowPlayingPresenter {
+import com.debugstudios.squeaky.contracts.views.NowPlayingView
+import net.grandcentrix.thirtyinch.TiPresenter
+
+class NowPlayingPresenter : TiPresenter<NowPlayingView>() {
+
+    override fun onAttachView(view: NowPlayingView) {
+        super.onAttachView(view)
+        view.setToolbarTitle("Now Playing")
+    }
 }

@@ -5,8 +5,8 @@ import net.grandcentrix.thirtyinch.TiPresenter
 
 class MainPresenter : TiPresenter<MainView>() {
 
-    override fun onAttachView(view: MainView):Unit{
+    override fun onAttachView(view: MainView) {
         super.onAttachView(view)
-        view.showText("Hello from Main Presenter!")
+        view.setUserName("prajjwaldimri")
     }
 }

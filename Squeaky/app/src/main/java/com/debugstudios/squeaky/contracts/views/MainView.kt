@@ -6,5 +6,6 @@ import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread
 interface MainView : TiView {
 
     @CallOnMainThread
-    fun showText(text:String):Unit
+    fun setUserName(username: String)
+
 }

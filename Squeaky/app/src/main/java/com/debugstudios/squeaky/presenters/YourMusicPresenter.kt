@@ -1,7 +1,12 @@
 package com.debugstudios.squeaky.presenters
 
-/**
- * Created by prajjwal on 17/4/17.
- */
-class YourMusicPresenter {
+import com.debugstudios.squeaky.contracts.views.YourMusicView
+import net.grandcentrix.thirtyinch.TiPresenter
+
+class YourMusicPresenter : TiPresenter<YourMusicView>() {
+
+    override fun onAttachView(view: YourMusicView) {
+        super.onAttachView(view)
+        view.setToolbarTitle("Your Music")
+    }
 }

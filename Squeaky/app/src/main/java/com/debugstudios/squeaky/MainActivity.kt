@@ -1,136 +1,149 @@
 package com.debugstudios.squeaky
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.app.ActionBar
-import android.os.Handler
+import android.support.v4.app.Fragment
+import android.support.v7.app.ActionBarDrawerToggle
+import android.view.Menu
+import android.view.View
+import android.widget.TextView
+import com.debugstudios.squeaky.contracts.views.MainView
 import com.debugstudios.squeaky.presenters.MainPresenter
+import com.debugstudios.squeaky.ui.fragments.NowPlayingFragment
+import com.debugstudios.squeaky.ui.fragments.RecentPlaysFragment
+import com.debugstudios.squeaky.ui.fragments.YourMusicFragment
+import com.joanzapata.iconify.IconDrawable
+import com.joanzapata.iconify.fonts.MaterialIcons
 import kotlinx.android.synthetic.main.activity_main.*
 import net.grandcentrix.thirtyinch.TiActivity
-import android.support.design.widget.FloatingActionButton
-import android.widget.TextView
-import android.support.v4.widget.DrawerLayout
-import android.support.design.widget.NavigationView
-import android.support.v7.widget.Toolbar
-import android.view.View
-import android.widget.ImageView
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import com.debugstudios.squeaky.R.id.*
-import com.debugstudios.squeaky.contracts.views.*
-
-import android.content.Intent
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.graphics.drawable.DrawerArrowDrawable
-import android.view.MenuItem
 
 
 class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
-    var navigationView: NavigationView? = null
-    private var drawer: DrawerLayout? = null
-    private var navHeader: View? = null
-    private val toolbar: Toolbar? = null
-    private var fab: FloatingActionButton? = null
-    // index to identify current nav menu item
-    var navItemIndex = 0
+
+    var activityTitles: Array<String>? = null
+    var navItemIndex: Int = 0
+    var navigationDrawerHeader: View? = null
 
     // tags used to attach the fragments
-    private val TAG_HOME = "home"
-    private val TAG_NOW_PLAYING = "nowplaying"
-    private val TAG_MUSIC_LIBRARY = "musiclibrary"
-    private val TAG_RECENT_PLAYS = "recentplays"
-    private val TAG_RECOMMENDED = "recommended"
-    private val TAG_SETTINGS = "settings"
-    private val TAG_DOWNLOAD = "download"
-    var CURRENT_TAG = TAG_NOW_PLAYING
+    private val TAG_YOUR_MUSIC = "your_music"
+    private val TAG_NOW_PLAYING = "now_playing"
+    private val TAG_RECENT_PLAYS = "recent_plays"
+    var CURRENT_TAG = TAG_YOUR_MUSIC
 
-    // toolbar titles respected to selected nav menu item
-    private var activityTitles: Array<String>? = null
-
-    // flag to load home fragment when user presses back key
-    private val shouldLoadHomeFragOnBackPress = true
-    private var handler: Handler? = null
-
-    override fun showText(text: String) {
-        //text2.text = text
-    }
-
-    override fun providePresenter(): MainPresenter {
-        return MainPresenter()
-    }
+    override fun providePresenter(): MainPresenter = MainPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar);
-        handler = Handler()
-        navHeader = navigationView?.getHeaderView(0)
-        drawer = DrawerLayout(this)
-        navigationView = NavigationView(this)
-        fab = FloatingActionButton(this)
-        // load toolbar titles from string resources
-        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles)
 
-        fab?.setOnClickListener(View.OnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-        })
+        setSupportActionBar(toolbar)
+        this.title = "Welcome to Squeaky!"
+        activityTitles = resources.getStringArray(R.array.nav_item_activity_titles)
 
-        // initializing navigation menu
-        setUpNavigationView();
-        if (savedInstanceState == null) {
-            navItemIndex = 0;
-            CURRENT_TAG = TAG_HOME;
-            loadHomeFragment();
-        }
+        selectNavMenu()
+        loadHomeFragment()
+        updateMenuIcons(nav_view.menu)
     }
 
-    private fun setUpNavigationView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    /**
+     * Sets username in layout/nav_header_main
+     */
+    override fun setUserName(username: String) {
+        navigationDrawerHeader = nav_view.getHeaderView(0)
+        val usernameTextView = navigationDrawerHeader!!.findViewById(R.id.username) as TextView
+        usernameTextView.text = username
     }
 
-    private fun loadHomeFragment() {
-        // selecting appropriate nav menu item
-        selectNavMenu();
+    /**
+     * Loads fragments based on current selected item in navigation drawer
+     */
+    fun loadHomeFragment() {
+        // Select appropriate nav-menu item
+        selectNavMenu()
 
-        // set toolbar title
-        setToolbarTitle();
-        if (supportFragmentManager.findFragmentByTag(CURRENT_TAG) != null) {
-            drawer?.closeDrawer(0)
-            // show or hide the fab button
-            toggleFab();
-            return;
-        }
-        val pendingRunnable = Runnable {
-            // update the main content by replacing fragments
+        val mPendingRunnable = Runnable {
             val fragment = getHomeFragment()
             val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-            fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG)
-            fragmentTransaction.commitAllowingStateLoss()
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                    android.R.anim.fade_out)
+            fragmentTransaction.replace(main_frame.id, fragment, CURRENT_TAG)
+            fragmentTransaction.commitNowAllowingStateLoss()
         }
-        if (pendingRunnable != null) {
-            handler?.post(pendingRunnable)
+        mPendingRunnable.run()
+
+        drawer.closeDrawers()
+        invalidateOptionsMenu()
+    }
+
+    /**
+     * Returns an instance of a fragment based on selected item in navigation drawer
+     */
+    fun getHomeFragment(): Fragment {
+        when (navItemIndex) {
+            0 -> return YourMusicFragment()
+            1 -> return NowPlayingFragment()
+            2 -> return RecentPlaysFragment()
         }
-        toggleFab()
-        drawer?.closeDrawers();
-        invalidateOptionsMenu();
+        return NowPlayingFragment()
     }
 
-    private fun getHomeFragment(): Fragment? {
+    /**
+     * Item selected listener on navigation drawer
+     */
+    fun selectNavMenu() {
+        nav_view.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_your_music -> {
+                    navItemIndex = 0
+                    CURRENT_TAG = TAG_YOUR_MUSIC
+                }
+                R.id.nav_now_playing -> {
+                    navItemIndex = 1
+                    CURRENT_TAG = TAG_NOW_PLAYING
+                }
+                R.id.nav_recent -> {
+                    navItemIndex = 2
+                    CURRENT_TAG = TAG_RECENT_PLAYS
+                }
+            }
+            menuItem.isChecked = !menuItem.isChecked
 
-    }
-
-    private fun toggleFab() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
-    private fun selectNavMenu() {//Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-
+            loadHomeFragment()
+            true
         }
-    private fun setToolbarTitle() {
-        supportActionBar?.setTitle(activityTitles!![navItemIndex])
+
+        // The navigation drawer icon on toolbar
+        val actionBarDrawerToggle: ActionBarDrawerToggle =
+                object : ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer,
+                        R.string.closeDrawer) {
+                    override fun onDrawerOpened(drawerView: View?) {
+                        super.onDrawerOpened(drawerView)
+                    }
+
+                    override fun onDrawerClosed(drawerView: View?) {
+                        super.onDrawerClosed(drawerView)
+                    }
+                }
+
+        drawer.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
     }
 
+    /**
+     * Function to add icons to the menu items in navigation drawer
+     * @param menu is the activity_main_drawer file in menu which is the menu of nav drawer
+     */
+    fun updateMenuIcons(menu: Menu) {
+        menu.findItem(R.id.nav_now_playing).icon =
+                IconDrawable(this, MaterialIcons.md_equalizer)
+                        .actionBarSize()
+
+        menu.findItem(R.id.nav_your_music).icon =
+                IconDrawable(this, MaterialIcons.md_library_music)
+                        .actionBarSize()
+
+        menu.findItem(R.id.nav_recent).icon =
+                IconDrawable(this, MaterialIcons.md_av_timer)
+                        .actionBarSize()
+    }
 }
 
