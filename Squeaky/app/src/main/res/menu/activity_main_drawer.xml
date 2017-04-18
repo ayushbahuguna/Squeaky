@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_your_music"
+            android:checked="true"
+            android:title="@string/nav_your_music" />
+        <item
+            android:id="@+id/nav_now_playing"
+            android:title="@string/nav_now_playing" />
+        <item
+            android:id="@+id/nav_recent"
+            android:title="@string/nav_recent" />
+    </group>
+</menu>

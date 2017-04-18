@@ -3,9 +3,8 @@ package com.debugstudios.squeaky.contracts.views
 import net.grandcentrix.thirtyinch.TiView
 import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread
 
-interface MainView : TiView {
+interface RecentPlaysView : TiView {
 
     @CallOnMainThread
-    fun setUserName(username: String)
-
+    fun setToolbarTitle(title : String)
 }
