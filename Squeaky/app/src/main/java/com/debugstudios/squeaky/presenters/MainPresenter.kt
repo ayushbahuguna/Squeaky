@@ -8,5 +8,6 @@ class MainPresenter : TiPresenter<MainView>() {
     override fun onAttachView(view: MainView) {
         super.onAttachView(view)
         view.setUserName("prajjwaldimri")
+        view.setLoadingStatus(false)
     }
 }
