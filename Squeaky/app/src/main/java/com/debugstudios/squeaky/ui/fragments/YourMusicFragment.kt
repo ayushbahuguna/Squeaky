@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.debugstudios.squeaky.MainActivity
 import com.debugstudios.squeaky.R
 import com.debugstudios.squeaky.contracts.views.YourMusicView
 import com.debugstudios.squeaky.model.data_objects.Song
@@ -26,6 +27,11 @@ public class YourMusicFragment : TiFragment<YourMusicPresenter, YourMusicView>()
         val adapter = SongsAdapter(context, songs)
         songsRecyclerView.adapter = adapter
         songsRecyclerView.layoutManager = LinearLayoutManager(context)
+    }
+
+    override fun setLoadingStatus(isLoading: Boolean) {
+        var mainActivity = activity as MainActivity
+        mainActivity.setLoadingStatus(isLoading)
     }
 
     override fun providePresenter(): YourMusicPresenter = YourMusicPresenter()

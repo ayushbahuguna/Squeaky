@@ -1,17 +1,16 @@
 package com.debugstudios.squeaky.model.data_objects
 
-class Song {
+class Song(songId: Long, songTitle: String? = null, songArtist: String? = null, songDisplayName: String? = null) {
 
-    var id : Long? = null
-    var title : String? = null
-    var artist : String? = "Unknown Artist"
+    var id: Long? = songId
+    var title: String? = "Unknown Title"
+    var displayName: String? = "Unknown Name"
+    var artist: String? = "Unknown Artist"
 
-    constructor (songId: Long, songTitle : String,
-                 songArtist : String? = null) {
-        id = songId
-        title = songTitle
-        if(songArtist != null) {
-            artist = songArtist
-        }
+    init {
+        if (songTitle != null) title = songTitle
+        if (displayName != null) displayName = songDisplayName
+        if (songArtist != null) artist = songArtist
     }
+
 }

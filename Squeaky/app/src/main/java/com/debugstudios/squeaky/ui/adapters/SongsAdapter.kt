@@ -19,7 +19,7 @@ class SongsAdapter(context: Context, songs: List<Song>) : RecyclerView.Adapter<S
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val song = mSongs!![position]
         val textView = holder!!.songTitleTextView
-        textView!!.text = song.title
+        textView!!.text = song.displayName
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder{

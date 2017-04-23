@@ -9,7 +9,11 @@ interface YourMusicView : TiView {
 
     val mContentResolver : ContentResolver?
 
+    @CallOnMainThread
     fun setAdapterToSongsRecyclerView(songs: ArrayList<Song>)
+
+    @CallOnMainThread
+    fun setLoadingStatus(isLoading : Boolean)
 
     @CallOnMainThread
     fun setToolbarTitle(title : String)

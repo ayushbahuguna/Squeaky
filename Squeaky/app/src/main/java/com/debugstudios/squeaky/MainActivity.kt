@@ -2,10 +2,10 @@ package com.debugstudios.squeaky
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.media.MediaBrowserCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.afollestad.assent.Assent
@@ -25,7 +25,6 @@ class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
     var activityTitles: Array<String>? = null
     var navItemIndex: Int = 0
     var navigationDrawerHeader: View? = null
-    var mMediaBrowser: MediaBrowserCompat? = null
 
     // tags used to attach the fragments
     private val TAG_YOUR_MUSIC = "your_music"
@@ -64,7 +63,7 @@ class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
         this.title = "Welcome to Squeaky!"
         activityTitles = resources.getStringArray(R.array.nav_item_activity_titles)
     }
-    
+
     override fun onResume() {
         super.onResume()
         Assent.setActivity(this, this)
@@ -96,8 +95,9 @@ class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
      * Sets the visibility of progress bar
      */
     override fun setLoadingStatus(isLoading: Boolean) {
-        if (isLoading) main_progress_bar.visibility = View.VISIBLE
-        else main_progress_bar.visibility = View.GONE
+        val progressBar = findViewById(R.id.main_progress_bar) as ProgressBar
+        if (isLoading) {progressBar.visibility = View.VISIBLE}
+        else {progressBar.visibility = View.GONE}
     }
 
     /**
