@@ -15,7 +15,7 @@ import com.debugstudios.squeaky.ui.adapters.SongsAdapter
 import kotlinx.android.synthetic.main.fragment_your_music.*
 import net.grandcentrix.thirtyinch.TiFragment
 
-public class YourMusicFragment : TiFragment<YourMusicPresenter, YourMusicView>(), YourMusicView {
+class YourMusicFragment : TiFragment<YourMusicPresenter, YourMusicView>(), YourMusicView {
 
     override var mContentResolver: ContentResolver? = null
 
@@ -30,14 +30,14 @@ public class YourMusicFragment : TiFragment<YourMusicPresenter, YourMusicView>()
     }
 
     override fun setLoadingStatus(isLoading: Boolean) {
-        var mainActivity = activity as MainActivity
+        val mainActivity = activity as MainActivity
         mainActivity.setLoadingStatus(isLoading)
     }
 
     override fun providePresenter(): YourMusicPresenter = YourMusicPresenter()
 
-    public override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                                     savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_your_music, container, false)
         mContentResolver = activity.contentResolver

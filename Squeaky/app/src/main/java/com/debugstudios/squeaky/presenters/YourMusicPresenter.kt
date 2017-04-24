@@ -10,12 +10,9 @@ class YourMusicPresenter : TiPresenter<YourMusicView>() {
         super.onAttachView(view)
         view.setToolbarTitle("Your Music")
         view.setLoadingStatus(true)
-
-
         val localMediaRetriever = LocalMediaRetriever(view.mContentResolver!!)
-        val songList = localMediaRetriever.retrieveMedia()
+        val songList =  localMediaRetriever.retrieveMedia()
         view.setAdapterToSongsRecyclerView(songList)
-
         view.setLoadingStatus(false)
     }
 }
