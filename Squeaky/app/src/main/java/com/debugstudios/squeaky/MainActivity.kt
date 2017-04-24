@@ -14,6 +14,7 @@ import com.debugstudios.squeaky.contracts.views.MainView
 import com.debugstudios.squeaky.presenters.MainPresenter
 import com.debugstudios.squeaky.ui.fragments.NowPlayingFragment
 import com.debugstudios.squeaky.ui.fragments.RecentPlaysFragment
+import com.debugstudios.squeaky.ui.fragments.SettingsFragment
 import com.debugstudios.squeaky.ui.fragments.YourMusicFragment
 import com.joanzapata.iconify.IconDrawable
 import com.joanzapata.iconify.fonts.MaterialIcons
@@ -30,6 +31,7 @@ class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
     private val TAG_YOUR_MUSIC = "your_music"
     private val TAG_NOW_PLAYING = "now_playing"
     private val TAG_RECENT_PLAYS = "recent_plays"
+    private val TAG_SETTINGS = "settings"
     var CURRENT_TAG = TAG_YOUR_MUSIC
 
     override fun providePresenter(): MainPresenter = MainPresenter()
@@ -129,6 +131,7 @@ class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
             0 -> return YourMusicFragment()
             1 -> return NowPlayingFragment()
             2 -> return RecentPlaysFragment()
+            3 -> return SettingsFragment()
         }
         return NowPlayingFragment()
     }
@@ -150,6 +153,10 @@ class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
                 R.id.nav_recent -> {
                     navItemIndex = 2
                     CURRENT_TAG = TAG_RECENT_PLAYS
+                }
+                R.id.nav_settings -> {
+                    navItemIndex = 3
+                    CURRENT_TAG = TAG_SETTINGS
                 }
             }
             menuItem.isChecked = !menuItem.isChecked
@@ -190,6 +197,10 @@ class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
 
         menu.findItem(R.id.nav_recent).icon =
                 IconDrawable(this, MaterialIcons.md_av_timer)
+                        .actionBarSize()
+
+        menu.findItem(R.id.nav_settings).icon =
+                IconDrawable(this, MaterialIcons.md_settings)
                         .actionBarSize()
     }
 }
