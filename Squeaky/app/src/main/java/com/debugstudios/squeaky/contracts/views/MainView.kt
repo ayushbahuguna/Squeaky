@@ -8,4 +8,7 @@ interface MainView : TiView {
     @CallOnMainThread
     fun setUserName(username: String)
 
+    @CallOnMainThread
+    fun setLoadingStatus(isLoading : Boolean)
+
 }
