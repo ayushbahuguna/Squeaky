@@ -5,7 +5,11 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
+import com.afollestad.assent.Assent
+import com.afollestad.assent.AssentCallback
 import com.debugstudios.squeaky.contracts.views.MainView
 import com.debugstudios.squeaky.presenters.MainPresenter
 import com.debugstudios.squeaky.ui.fragments.NowPlayingFragment
@@ -15,7 +19,6 @@ import com.joanzapata.iconify.IconDrawable
 import com.joanzapata.iconify.fonts.MaterialIcons
 import kotlinx.android.synthetic.main.activity_main.*
 import net.grandcentrix.thirtyinch.TiActivity
-
 
 class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
 
@@ -34,14 +37,49 @@ class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setSupportActionBar(toolbar)
+
+        Assent.setActivity(this, this)
+
+        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+            Assent.requestPermissions(AssentCallback { result ->
+                if(!result!!.allPermissionsGranted()){
+                    Toast.makeText(applicationContext,
+                            "Cannot function without the permissions!",
+                            Toast.LENGTH_LONG).show()
+                } else {
+                    selectNavMenu()
+                    loadHomeFragment()
+                    updateMenuIcons(nav_view.menu)
+                }
+            }, 69, Assent.WRITE_EXTERNAL_STORAGE)
+        }
+        else {
+            selectNavMenu()
+            loadHomeFragment()
+            updateMenuIcons(nav_view.menu)
+        }
+
         this.title = "Welcome to Squeaky!"
         activityTitles = resources.getStringArray(R.array.nav_item_activity_titles)
+    }
 
-        selectNavMenu()
-        loadHomeFragment()
-        updateMenuIcons(nav_view.menu)
+    override fun onResume() {
+        super.onResume()
+        Assent.setActivity(this, this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (isFinishing)
+            Assent.setActivity(this, null)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<out String>,
+                                            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Assent.handleResult(permissions, grantResults)
     }
 
     /**
@@ -51,6 +89,15 @@ class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
         navigationDrawerHeader = nav_view.getHeaderView(0)
         val usernameTextView = navigationDrawerHeader!!.findViewById(R.id.username) as TextView
         usernameTextView.text = username
+    }
+
+    /**
+     * Sets the visibility of progress bar
+     */
+    override fun setLoadingStatus(isLoading: Boolean) {
+        val progressBar = findViewById(R.id.main_progress_bar) as ProgressBar
+        if (isLoading) {progressBar.visibility = View.VISIBLE}
+        else {progressBar.visibility = View.GONE}
     }
 
     /**
